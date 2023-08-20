@@ -1,0 +1,962 @@
+<!doctype html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<html>
+	
+	<script>
+	var selectedNumbers = localStorage.getItem('selectedNumbers');
+		var price = localStorage.getItem('price');
+		console.log(selectedNumbers);
+		console.log(price);
+		
+	</script>
+	
+<body onload="display_ct(); display_ct_mes()">
+	
+  <span id="ct" class="datum"></span>
+  <span id="ct_mes" class="datum_mes"></span>
+	
+	<button class = "jazyk cz"
+			onclick='document.getElementById("dolni_text").innerHTML = "Uvedené ceny jsou od 23:00 do 07:00 vyšší o 20%"'>cz
+	</button>
+	<button class = "jazyk en" 
+			onclick='document.getElementById("dolni_text").innerHTML = "Listed prices are 20% higher from 23:00 to 07:00"'>en
+	</button>
+	<button class = "jazyk uk"
+			onclick='document.getElementById("dolni_text").innerHTML = "ціни на 20% вищі з 23:00 до 07:00"'>uk
+	</button>
+	<button class = "jazyk es"
+			onclick='document.getElementById("dolni_text").innerHTML = "Los precios son un 20% más altos de 23:00 a 07:00"'>es
+	</button>
+	
+	<hr class = "cara h"/>
+	<hr class = "cara d"/>
+	<hr class = "cara d2"/>
+	<hr class = "cara d3"/>
+	
+	<div> 
+		<text
+		id="selectedNumbers" 
+		class="selectedNumber12">
+		</text> 
+	</div>
+	
+	
+	<button class = "tl_ordered" id='tl_ordered'></button>
+	
+	<script>
+		document.getElementById("selectedNumbers").innerHTML = selectedNumbers;
+	</script>
+	
+	<button 
+			class = "tl_confirm"
+			id="confirm" 
+	></button>
+	
+	<button 
+			class = "tl_deny" 
+			id="deny"
+	></button>
+	
+	<script>
+		
+    function getKosikData() {
+      return JSON.parse(localStorage.getItem('kosik')) || [];
+    }
+
+    function updateKosikData(data) {
+      localStorage.setItem('kosik', JSON.stringify(data));
+    }
+
+    // Log the contents of the 'kosik' array in the console every time the page loads
+    var kosik = getKosikData();
+    console.log('Data in kosik array:', kosik);
+
+    function deleteNumbers() {
+      selectedNumbers = [];
+      updateSelectedNumbers();
+      checkConfirmationAvailability();
+    };
+
+    document.getElementById('confirm').addEventListener('click', function() {
+      var selectedNumbers = localStorage.getItem('selectedNumbers');
+      var price = localStorage.getItem('price');
+
+      if (price && selectedNumbers) {
+        // Retrieve existing data from 'kosik' array in localStorage
+        var kosik = getKosikData();
+        
+        // Add the new pair (price + selectedNumbers) to the 'kosik' array
+        kosik.push(price + ", " + selectedNumbers);
+        
+        // Update the 'kosik' array in localStorage with the new data
+        updateKosikData(kosik);
+        
+        console.log('Price and selectedNumbers added to kosik:', price, selectedNumbers);
+		  window.location.href = 'automat gui hlavni v5.html' 
+
+        // Display the contents of the 'kosik' array in the console after the update
+        console.log('Data in kosik array:', kosik);
+      } else {
+        console.log('Price or selectedNumbers not available. Please set both variables before clicking "Confirm".');  
+      }
+    });
+		document.getElementById('deny').addEventListener('click', function() {
+      var selectedNumbers = localStorage.getItem('selectedNumbers');
+      var price = localStorage.getItem('price');
+
+      if (price && selectedNumbers) {
+        // Retrieve existing data from 'kosik' array in localStorage
+        var kosik = getKosikData();
+        
+        // Add the new pair (price + selectedNumbers) to the 'kosik' array
+        kosik.push(price + ", " + selectedNumbers);
+        
+        // Update the 'kosik' array in localStorage with the new data
+        updateKosikData(kosik);
+        
+        console.log('Price and selectedNumbers added to kosik:', price, selectedNumbers);
+		  window.location.href = 'automat gui kosik v5.html' 
+
+        // Display the contents of the 'kosik' array in the console after the update
+        console.log('Data in kosik array:', kosik);
+      } else {
+        console.log('Price or selectedNumbers not available. Please set both variables before clicking "Confirm".');
+      }
+    });
+		
+  </script>
+	<!--      window.location.href = 'automat gui hlavni v5.html'       -->
+	
+	
+	
+	<hr class = "line v1"/>
+	<hr class = "line v2"/>
+	<hr class = "line v3"/>
+	
+	
+	<text id= "dolni_text" class = "dolni_text">Uvedené ceny jsou od 23:00 do 07:00 vyšší o 20%</text>
+	
+	<text id= "cena" class = "cena">Cena:</text>
+	
+	<div class="prava_hranice">
+		<p id="price" class="price"></p>
+			<script>
+		document.getElementById("price").innerHTML = price + ',-';
+			</script>
+	</div>
+	
+	<text  id= "jeste_neco_js1" class = "jeste_neco js1">
+		Chcete si koupit ještě 
+	</text>
+	
+	<text  id= "jeste_neco_js2" class = "jeste_neco js2">
+		něco než zaplatíte?
+	</text>
+	
+	<text  id= "spatny_produkt" class = "spatny_produkt">
+		Špatný výběr?
+	</text>
+	
+	<button  id= "spatny_produkt_bt" class = "spatny_produkt_bt"
+			onclick="window.location.href = 'automat gui hlavni v5.html'">
+		Vybrat znovu
+	</button>
+	
+	<button 
+			class = "cart" 
+			id = "cart"
+			onclick="window.location.href = 'automat gui kosik v5.html'">Košík
+	</button>
+	
+		<button 
+			class = "exit" 
+			id = "exit"
+			onClick="showPopup()">Odejít
+	</button>
+	
+
+    <div id="dark-overlay"></div>
+
+    <div id="popup-container">
+        <span id="close-button" onclick="hidePopup()">&times;</span>
+        <p class="chcete_zahodit">Chcete zahodit vaší objednávku?</p>
+        <p class="dalsi_info">Potvrzením smažete vše v Košíku. <br>V Košíku můžete smazat v <br>jednotlivé položky a nebo přiobjednat kliknutím na tlačítko "Ještě chci nakupovat".</p>
+		<button class="confirm_popup" onclick="confirm_popup()"></button>
+        <button class="deny_popup" onclick="deny_popup()"></button>
+    </div>
+	
+	<script>
+        function showPopup() {
+            var overlay = document.getElementById("dark-overlay");
+            var popup = document.getElementById("popup-container");
+            overlay.style.display = "block";
+            popup.style.display = "block";
+        }
+
+        function deny_popup() {
+            var overlay = document.getElementById("dark-overlay");
+            var popup = document.getElementById("popup-container");
+            overlay.style.display = "none";
+            popup.style.display = "none";
+        }
+			
+		function confirm_popup() {
+            var overlay = document.getElementById("dark-overlay");
+            var popup = document.getElementById("popup-container");
+            overlay.style.display = "none";
+            popup.style.display = "none";
+			
+			//deleteNumbers();
+			deleteKosikData();
+		
+			window.location.href='automat gui hlavni v5.html';
+        }
+			
+		function deleteKosikData() {
+      		var kosik = [];
+      		updateKosikData(kosik);
+      		console.log('Data in kosik array has been deleted.');
+    }
+    </script>
+	<img src="glossy75.png" alt="glossy" class ="glossy" id="glossy">
+	<img src="pozadi.png" alt="pozadi" class ="pozadi" id="pozadi">
+	
+	<button 
+			class = "napoveda" 
+			id = "napoveda"
+			onClick="showNapoveda()">?
+	</button>
+	
+	
+	<div id="napoveda-container">
+        <span id="nap_close-button" onclick="nap_hidePopup()">&times;</span>
+        <p class="nap_chcete_zahodit">Nápověda</p>
+        <p class="nap_dalsi_info">
+		
+			U každého produktu v automatu je vedle ceny dvojciferné číslo. Toto číslo vyberete kliknutím na vybrané číslice na hlavní stránce. Na hlavní stránku se vrátíte kliknutím na Odejít (dolní pravý roh), čímž také smažete všechny predešlé objednané položky, které jsou v Košíku.
+			
+		</p>
+        <button class="nap_deny_popup" onclick="nap_deny_popup()"></button>
+    </div>
+	
+	<script>
+        function showNapoveda() {
+            var overlay = document.getElementById("dark-overlay");
+            var popup = document.getElementById("napoveda-container");
+            overlay.style.display = "block";
+            popup.style.display = "block";
+        }
+
+        function nap_deny_popup() {
+            var overlay = document.getElementById("dark-overlay");
+            var popup = document.getElementById("napoveda-container");
+            overlay.style.display = "none";
+            popup.style.display = "none";
+        }
+    </script>
+	
+</body>
+	
+<script>
+	
+		display_ct();
+      // Update time every second
+      setInterval(display_ct, 1000);
+	
+  function display_ct() {
+    var x = new Date()
+    var x1 = ('0' + x.getHours()).slice(-2) + ":" + ('0' + x.getMinutes()).slice(-2) + ":" + ('0' + x.getSeconds()).slice(-2);
+    document.getElementById('ct').innerHTML = x1;
+  };
+
+  function display_ct_mes() {
+    var x = new Date()
+    var x1 = x.getDate() + "." + (x.getMonth() + 1) + ".";
+    document.getElementById('ct_mes').innerHTML = x1;
+  };
+			
+	function deleteNumbers() {
+    selectedNumbers = [];
+    updateSelectedNumbers();
+    checkConfirmationAvailability();
+  };	
+</script>
+
+<style>
+	
+body{
+	}
+	
+	.spatny_produkt{
+		position: absolute;
+		z-index: 5;
+    	font-size: 30px;
+		color: white;
+		/*top: 947px;left: 295px;*/
+		top: 1025px;
+		left: 130px;
+	}
+	
+	.spatny_produkt_bt{
+		position: absolute;
+		z-index: 5;
+		top: 1000px;
+		/*
+		left: 260px;
+		*/
+		
+		left: 365px;
+		border-width: 3px;
+		border-color: white;
+		border-style: solid;
+	
+		background-color: rgba(255,255,255,1);
+		box-shadow: 8px 8px 8px 0 rgba(0,0,0,0.2);
+		border-radius: 14px;
+		
+		height: 90px;
+		width: 335px;
+		color: #3c78a9;
+		font-size: 30px;
+	}
+	
+	.napoveda{
+	border-width: 3px;
+	border-color: white;
+	border-style: solid;
+	background-color: rgba(255,255,255,1);
+	border-radius: 14px;
+	top: 1133px;
+	left: 365px;
+	height: 70px;
+	width: 70px;
+	position: absolute;
+	z-index: 4;
+	box-shadow: 8px 8px 8px 0 rgba(0,0,0,0.2);
+	color: #3C78A9;
+	font-size: 43px;
+	animation: glowing 2000ms infinite;
+	}
+	
+	@keyframes glowing {
+        0% {
+          background-color: rgba(255,255,255,0.20);
+          box-shadow: 0 0 5px #FFFFFF;
+			color:white;
+        }
+        50% {
+          background-color: rgba(255,255,255,1.0);
+          box-shadow: 0 0 10px #FFFFFF;
+			color: #3C78A9;
+        }
+        100% {
+          background-color: rgba(255,255,255,0.2);
+          box-shadow: 0 0 5px #FFFFFF;
+			color:white;
+        }
+      }
+	#napoveda-container {
+            position: fixed;
+			width: 550px;
+            height: 700px;
+            top: 260px;
+            left: 100px;
+            /*transform: translate(-100%, -50%);  tohle zmeni kde je tlacitko*/
+            background-color: rgba(255,255,255,1);
+            padding: 20px;
+            border-radius: 40px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            display: none;
+            z-index: 10000;
+			border-width: 3px;
+			border-color: white;
+			border-style: solid;
+        }
+	.nap_chcete_zahodit{
+			text-align: center;
+			margin-top: 0px;
+			font-size: 40px;
+			color: #3C78A9;
+        }
+	
+		.nap_dalsi_info{
+			margin-top: 10px;
+			margin-left: 10px;
+			font-size: 30px;
+			color: #3C78A9;
+        }
+	
+	.nap_deny_popup{
+	border-width: 0px;
+	border-color: white;
+	border-style: solid;
+	background-color: #3C78A9;
+	border-radius: 14px;
+	top: 580px;
+	left: 250px;
+		
+	height: 100px;
+	width: 100px;
+		
+	position: absolute;
+	z-index: 4;
+	box-shadow: 8px 8px 8px 0 rgba(0,0,0,0.2);
+	background-image: url("deny.png");
+	background-repeat: no-repeat;
+	background-size: 60px;
+	background-position: 50% 50% ;
+	}
+	
+	#dark-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            z-index: 9999;
+        }
+	#popup-container {
+            position: fixed;
+			width: 550px;
+            height: 700px;
+            top: 260px;
+            left: 100px;
+            /*transform: translate(-100%, -50%);  tohle zmeni kde je tlacitko*/
+            background-color: rgba(255,255,255,1);
+            padding: 20px;
+            border-radius: 40px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            display: none;
+            z-index: 10000;
+			border-width: 3px;
+			border-color: white;
+			border-style: solid;
+        }
+
+	.prava_hranice{
+		width: 800px;
+		height: 1280px;
+		pointer-events: none;
+		
+		top: 0pt;
+		left: 0pt;
+	
+		position: absolute;
+		z-index: 5;	
+	}	
+	
+	.price{
+		position: absolute;
+		z-index: 5;
+		font-size: 50px;
+		top: 500px;
+		right: 130px;
+	}
+	
+		.chcete_zahodit{
+			text-align: center;
+			margin-top: 20px;
+			font-size: 40px;
+			color: #3C78A9;
+        }
+	
+		.dalsi_info{
+			margin-top: 120px;
+			margin-left: 40px;
+			font-size: 30px;
+			color: #3C78A9;
+        }
+
+	.confirm_popup{
+	border-width: 0px;
+	border-color: white;
+	border-style: solid;
+	background-color: #3C78A9;
+	border-radius: 14px;
+	top: 580px;
+	left: 330px;
+		
+	height: 100px;
+	width: 200px;
+		
+	position: absolute;
+	z-index: 4;
+	box-shadow: 8px 8px 8px 0 rgba(0,0,0,0.2);
+	background-image: url("confirm.png");
+	background-repeat: no-repeat;
+	background-size: 60px;
+	background-position: 50% 50% ;
+	}
+	
+	.deny_popup{
+	border-width: 0px;
+	border-color: white;
+	border-style: solid;
+	background-color: #3C78A9;
+	border-radius: 14px;
+	top: 580px;
+	left: 60px;
+		
+	height: 100px;
+	width: 200px;
+		
+	position: absolute;
+	z-index: 4;
+	box-shadow: 8px 8px 8px 0 rgba(0,0,0,0.2);
+	background-image: url("deny.png");
+	background-repeat: no-repeat;
+	background-size: 60px;
+	background-position: 50% 50% ;
+	}
+	
+	
+	.jeste_neco{
+		position: absolute;
+		z-index: 5;
+    	font-size: 40px;
+		color: white;
+	}
+		
+		.js1{
+		top: 720px;
+		left: 205px;
+	}
+		.js2{
+		top: 770px;
+		left: 215px;
+	}
+	
+	.exit{
+	border-width: 0px;
+	border-style: solid;
+	background-color: rgba(255,255,255,1);
+	border-radius: 14px;
+	top: 1133px;
+	left: 460px;
+	height: 70px;
+	width: 250px;
+	position: absolute;
+	z-index: 4;
+	box-shadow: 8px 8px 8px 0 rgba(0,0,0,0.2);
+	background-image: url("exit.png");
+	background-repeat: no-repeat;
+	background-size: 35px;
+	background-position: 90% 50% ;
+	color: #3C78A9;
+	font-size: 30px;
+	padding-right: 120px;
+	}	
+	
+.cart{
+	border-width: 3px;
+	border-color: white;
+	border-style: solid;
+	background-color: rgba(255,255,255,0.30);
+	border-radius: 14px;
+	top: 1133px;
+	left: 90px;
+	height: 70px;
+	width: 250px;
+	position: absolute;
+	z-index: 4;
+	box-shadow: 8px 8px 8px 0 rgba(0,0,0,0.2);
+	background-image: url("cart.png");
+	background-repeat: no-repeat;
+	background-size: 38px;
+	background-position: 10% 50% ;
+	font-size: 30px;
+	padding-left: 120px;
+	}	
+	
+	.dolni_text_srdicka{
+		content: 'Miluju te';
+		position: absolute;
+		z-index: 7;
+		top: 287px;
+	left: 337px;
+	}	
+	
+.srdicka{
+	border-radius: 100%;
+	border-style: solid;	
+	border-width: 3px;
+	border-color: white;
+	background-color: rgba(249,127,184,1.00);
+	border-radius:10px;
+	font-size: 40px;
+	height: 110px;
+	width: 110px;
+	position: absolute;
+	z-index: 8;
+	box-shadow: 8px 8px 8px 0 rgba(0,0,0,0.2);
+	left: 90px;
+	}
+	
+.srdicka:hover {
+	background-color: rgba(161,7,79,1.00);
+	font-size: 50px;
+	box-shadow: 0px 0px 0px 0px rgba(0,0,0,0);
+	color: white;
+  }	
+	
+.selectedNumber12{
+	/*color: rgba(131,166,186,1.00);*/
+	color: rgba(255,255,255,1.00);
+	/*color: rgba(255,255,255,1.00);*/
+	position: absolute;
+	z-index: 7;
+	font-size: 100px;
+	top: 287px;
+	left: 339px;
+	}	
+	
+	
+.dolni_text{
+		position: absolute;
+		z-index: 5;
+		margin-left: 110px;
+		font-size: 23px;
+		top: 630px;
+	}	
+		
+	
+.line{
+		
+		top: -2px;
+		width: 2px;
+		height: 1280px;
+		border: none;
+		z-index: 99;
+		position: absolute;
+		background-color: rgba(0,0,0,0); /*jestli jsou videt nebo ne urci posledni cislo*/
+	}	
+	
+	.v1{
+		left:399px;
+	}
+	
+	.v2{
+		left:319px;
+	}
+	
+	.v3{
+		left:479px;
+	}
+	
+.tl_ordered{
+	background-color: rgba(41,47,50,0);
+	background-color: rgba(255,255,255,0.4);
+	border-radius: 100%;
+	border-style: solid;	
+	border-width: 3px;
+	border-color: white;
+	font-size: 100px;
+	top: 232px;
+	left: 275px;
+	height: 250px;
+	width: 250px;
+	position: absolute;
+	z-index: 6;
+	box-shadow: 16px 16px 16px 0 rgba(0,0,0,0.2);	
+	}
+	
+.text_ordered{
+	color: rgba(131,166,186,0.00);
+	/*color: rgba(255,255,255,1.00);*/
+	position: absolute;
+	z-index: 7;
+	font-size: 100px;
+	top: 313px;
+	}	
+	
+	
+.tl_confirm{
+	
+	position: absolute;
+	z-index: 4;
+	
+	top: 860px;
+	left: 100px;
+	height: 90px;
+	width: 280px;
+	
+	border-width: 3px;
+	border-color: white;
+	border-style: solid;
+	
+	background-color: rgba(255,255,255,0.30);
+	border-radius: 14px;
+	
+	box-shadow: 8px 8px 8px 0 rgba(0,0,0,0.2);
+	
+	background-image: url("confirm.png");
+	background-repeat: no-repeat;
+	background-size: 60px;
+	background-position: 50% 50% ;
+	}	
+
+.tl_confirm:hover {
+    background-color: rgba(255,255,255,1.0);
+	box-shadow: 0px 0px 0px 0px rgba(0,0,0,0);
+	background-image: url("confirm_blue.png");
+	background-repeat: no-repeat;
+	background-size: 70px;
+	background-position: 50% 50%;	
+  }
+	.tl_confirm_love
+	{
+	border-style: solid;	
+	border-width: 3px;
+	border-color: white;
+	background-color: rgba(255,255,255,0.30);
+	border-radius: 14px;
+	top: 600px;
+	left: 460px;
+	height: 180px;
+	width: 180px;
+	position: absolute;
+	z-index: 4;
+	box-shadow: 8px 8px 8px 0 rgba(0,0,0,0.2);
+	
+	background-image: url("confirm.png");
+	background-repeat: no-repeat;
+	background-size: 80px;
+	background-position: 50% 50% ;
+	}	
+	
+	.tl_confirm_love:hover {
+    background-color: rgba(255,255,255,1.0);
+	box-shadow: 0px 0px 0px 0px rgba(0,0,0,0);
+	background-image: url("confirm_pink.png");
+	background-repeat: no-repeat;
+	background-size: 70px;
+	background-position: 50% 50%;	
+  }	
+	
+.tl_deny{
+	border-width: 3px;
+	border-color: white;
+	border-style: solid;
+	
+	background-color: rgba(255,255,255,0.30);
+	border-radius: 14px;
+	
+	top: 860px;
+	left: 420px;
+	height: 90px;
+	width: 280px;
+	
+	position: absolute;
+	z-index: 4;
+	box-shadow: 8px 8px 8px 0 rgba(0,0,0,0.2);
+	
+	background-image: url("deny.png");
+	background-repeat: no-repeat;
+	background-size: 60px;
+	background-position: 50% 50%;
+	}
+	
+.tl_deny:hover {
+    background-color: rgba(255,255,255,1.0);
+	box-shadow: 0px 0px 0px 0px rgba(0,0,0,0);
+	background-image: url("deny_blue.png");
+	background-repeat: no-repeat;
+	background-size: 70px;
+	background-position: 50% 50%;	
+  }
+	
+	.tl_deny_love{
+	border-style: solid;	
+	border-width: 3px;
+	border-color: white;
+	background-color: rgba(255,255,255,0.30);
+	border-radius: 14px;
+	top: 860px;
+	left: 460px;
+	height: 180px;
+	width: 180px;
+	position: absolute;
+	z-index: 4;
+	box-shadow: 8px 8px 8px 0 rgba(0,0,0,0.2);
+	
+	background-image: url("deny.png");
+	background-repeat: no-repeat;
+	background-size: 70px;
+	background-position: 50% 50%;
+	}
+	
+	.tl_deny_love:hover {
+    background-color: rgba(255,255,255,1.0);
+	box-shadow: 0px 0px 0px 0px rgba(0,0,0,0);
+	background-image: url("deny_pink.png");
+	background-repeat: no-repeat;
+	background-size: 95px;
+	background-position: 50% 50%;	
+  }
+
+.jazyk{
+		border-width: 2px;
+	border-color: white;
+	border-style: solid;
+	
+	background-color: rgba(255,255,255,0.3);
+	border-radius:10px;
+	
+	font-size: 25px;
+	top: 85px;
+	height: 70px;
+	width: 70px;
+	position: absolute;
+	z-index: 5;
+	
+	box-shadow: 6px 6px 6px 0 rgba(0,0,0,0.2);
+	}
+	
+.jazyk:hover {
+    background-color: white;
+	font-size: 28px;
+	box-shadow: 0px 0px 0px 0px rgba(0,0,0,0);
+	color: #3C78A9;
+  }
+	
+.jazyk:active {
+    background-color: rgba(101,151,175,1.00);
+	box-shadow: 0px 0px 0px 0px rgba(0,0,0,0);
+	color: white;
+  }	
+	
+.cz{
+	left: 640px;
+	}	
+	
+.en{
+	left: 560px;
+	}
+	
+.uk{
+	left: 480px;
+	}
+	
+.es{
+	left: 400px;
+	}	
+	
+.cara{
+	background-color: rgba(255,255,255,1.00);
+	border: none;
+	height: 3px;
+	left: 90px;
+	width: 620px;
+	position: absolute;
+	z-index: 5;
+	}	
+	
+	.h{
+	top: 180px;
+	}
+	.d{
+	top: 1100px;
+	}
+	.d2{
+	top: 520px;
+	}
+	.d3{
+	top: 670px;
+	}
+	
+	
+.datum{
+	
+	color: white;
+	font-size: 33px;
+	position: absolute;
+	z-index: 5;
+	margin-left: 91px;
+	margin-top: 91px;
+	}	
+	
+.datum_mes{
+	color: white;
+	font-size: 33px;
+	position: absolute;
+	z-index: 5;
+	margin-left:260px;
+	margin-top: 91px;
+	}		
+		
+	
+	
+.glossy{
+	position: absolute;
+	border-radius: 30pt;
+	margin-top: 50px;
+	margin-left: 50px;
+	margin-right: 50px;
+	margin-bottom: 50px;
+	width: 700px;
+	height: 1180px;
+	z-index: 3;
+	left: 0px;
+	top: 0px;
+	box-shadow: 22px 22px 22px 0px rgba(0,0,0,0.3);
+	}
+	
+.glossy_pink{
+	background-image: url(glossy pink.png);
+	position: absolute;
+	border-radius: 30pt;
+	margin-top: 50px;
+	margin-left: 50px;
+	margin-right: 50px;
+	margin-bottom: 50px;
+	width: 700px;
+	height: 1180px;
+	z-index: 3;
+	left: 0px;
+	top: 0px;
+	box-shadow: 22px 22px 22px 0px rgba(0,0,0,0.3);
+	}
+
+	
+.glossy_shadow{
+	position: absolute;
+	margin-top: 80px;
+	margin-left: 80px;
+	width: 700px;
+	height: 1180px;
+	z-index: 0;
+	left: 0px;
+	top: 0px;
+	}
+.pozadi{
+	position: absolute;
+	width: 800px;
+	height: 1280px;
+	z-index: 1;
+	left: 0px;
+	top: 0px;
+	}
+	
+.cena{
+		position: absolute;
+		z-index: 5;
+		margin-left: 110px;
+		font-size: 50px;
+		top: 550px;
+	}	
+	
+@font-face {
+  font-family: "futura";
+  src: url("file:///Macintosh%20HD/Users/matsuo/Downloads/futura/futura%20medium%20bt.ttf");
+}
+	
+*
+	{
+		font-family: 'futura';
+		color: white;
+	}	
+</style>
+	
+</html>
